@@ -40,17 +40,45 @@ export function TestNotification() {
   };
 
   const simulateNotificationSend = async (): Promise<TestResult> => {
-    // ⚠️ ATENÇÃO: Este é apenas uma SIMULAÇÃO!
-    // Para envios reais, você precisa conectar seu backend Node.js
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
+    try {
+      // Tentar se conectar ao backend real primeiro
+      const response = await fetch('http://localhost:3001/api/test-notification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cliente_nome: testData.clienteName,
+          cliente_numero: testData.clienteNumber,
+          produto: testData.produto,
+          cnpj: testData.cnpj,
+          vendedor_numero: testData.vendorNumber
+        })
+      });
+
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
+        return {
+          success: true,
+          message: result.message || 'Notificação enviada com sucesso!',
+          twilioSid: result.sid
+        };
+      } else {
+        return {
           success: false,
-          message: '⚠️ SIMULAÇÃO APENAS - Backend não conectado',
-          error: 'Este dashboard precisa ser conectado ao seu código Node.js para enviar mensagens reais via Twilio. Veja o arquivo INTEGRATION.md para instruções.'
-        });
-      }, 2000);
-    });
+          message: result.message || 'Falha no envio da notificação',
+          error: result.error || 'Erro desconhecido'
+        };
+      }
+    } catch (error) {
+      // Se não conseguir conectar ao backend, mostrar mensagem educativa
+      return {
+        success: false,
+        message: '⚠️ Backend não encontrado',
+        error: 'Para enviar mensagens reais, configure o backend conforme GUIA_COMPLETO_INSTALACAO.md ou INICIO_RAPIDO.md'
+      };
+    }
   };
 
   const handleSendTest = async () => {
