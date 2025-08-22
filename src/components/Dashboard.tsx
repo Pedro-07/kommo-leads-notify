@@ -8,6 +8,7 @@ import { NotificationConfig } from './NotificationConfig';
 import { NotificationLogs } from './NotificationLogs';
 import { TestNotification } from './TestNotification';
 import { LiveMonitor } from './LiveMonitor';
+import { ConnectionStatus } from './ConnectionStatus';
 import dashboardHero from '@/assets/dashboard-hero.jpg';
 
 interface DashboardStats {
@@ -53,6 +54,11 @@ export function Dashboard() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
+        {/* Connection Status Alert */}
+        <div className="mb-6">
+          <ConnectionStatus />
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-card border-border">

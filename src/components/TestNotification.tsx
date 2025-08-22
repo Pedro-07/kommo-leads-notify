@@ -40,25 +40,16 @@ export function TestNotification() {
   };
 
   const simulateNotificationSend = async (): Promise<TestResult> => {
-    // Simula uma chamada para a API do Twilio
+    // ⚠️ ATENÇÃO: Este é apenas uma SIMULAÇÃO!
+    // Para envios reais, você precisa conectar seu backend Node.js
     return new Promise((resolve) => {
       setTimeout(() => {
-        const isSuccess = Math.random() > 0.1; // 90% de sucesso simulado
-        
-        if (isSuccess) {
-          resolve({
-            success: true,
-            message: 'Notificação enviada com sucesso!',
-            twilioSid: 'SM' + Math.random().toString(36).substr(2, 9)
-          });
-        } else {
-          resolve({
-            success: false,
-            message: 'Falha no envio da notificação',
-            error: 'Número de destino inválido'
-          });
-        }
-      }, 2000 + Math.random() * 1000); // 2-3 segundos de delay
+        resolve({
+          success: false,
+          message: '⚠️ SIMULAÇÃO APENAS - Backend não conectado',
+          error: 'Este dashboard precisa ser conectado ao seu código Node.js para enviar mensagens reais via Twilio. Veja o arquivo INTEGRATION.md para instruções.'
+        });
+      }, 2000);
     });
   };
 
